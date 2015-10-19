@@ -17,3 +17,9 @@ QPBev0ItJq6SM+xw//1sDQ9C/XqbA4ryGYkpu7Shnk8qBbxmLmhD53S0iePhagQAgaIXY4OBbduD
 bPGWmwRGAZ6AooQ5ha/oGZAT1G/MNiOP6txM9QFhrs99yraAg33ceWh+GkSmcxPF2jAo5AjxCZdS
 GZIMAAt9zBtS0GWPuyjvVxpO+wAAAABk02lkcsrUmgAB9QXWEQAABfwxULHEZ/sCAAAAAARZWg==
 ~~~
+
+Not java but still handy:
+
+~~~ { .sed }
+sed -n '/^--/d;/^\s*$/d;H;${x;s/\nimport[^\n]*\(\n [^\n]*\)*//g;p}'
+~~~
