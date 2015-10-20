@@ -20,6 +20,6 @@ GZIMAAt9zBtS0GWPuyjvVxpO+wAAAABk02lkcsrUmgAB9QXWEQAABfwxULHEZ/sCAAAAAARZWg==
 
 Not java but still handy:
 
-~~~ { .sed }
-sed -n '/^--/d;/^\s*$/d;H;${x;s/\nimport[^\n]*\(\n [^\n]*\)*//g;p}'
+~~~ { .bash }
+find . -name '*.hs' -print0 | xargs -n1 -0 sed -i -n '/^\s*$/d;H;${x;s/^\n//;s/\nimport[^\n]*\(\n [^\n]*\)*//g;p}'
 ~~~
