@@ -4,23 +4,110 @@ Handy Snippets
 Java
 ----
 
-Some java snippets
+Change code just by inheritance parametrization.
 
-~~~ { .base64 }
-/Td6WFoAAATm1rRGAgAhARYAAAB0L+Wj4AjVAtldABfgfIR1MvbP1vQ+3nWHN7FMjzzo2L2E29zx
-26C/V9JhnMjVIEXeQW2PZ9E7MxCErgWUHiIKS/zEkGjy7W7fbsGxd9ce5CGXw4JNCJuN7c0RBRj+
-xN/JsrTLJnZwH8jH6vN2qLpJh22X9vGFgyL1/+bXl9atPJb+d1nbefyLvC5PqbIRk2xrLC7ZJWhi
-txZqEOjm6+vTbaCMB1zYtWDYWJrywuFA7zVEmg5myNVP2y6ja0BGx3TS2S6SAdGGVeaeASaMkWUP
-LWCVgJNLvqeMR3NSRBhpTuuHBzsspMtbcb33dFSwuwykU+14LoMIBBVNXF4SK6PzwjR0RpqZVWn6
-oAmJinMdhIlvExMGoBx51JC2/UKhpdfn+SiFHB6uWnOB8C3EKqCbnvNCqj1JBzmlvGnLFKCVhYGz
-5TjY9rmqdv50KDIOJSif/OFR9+qw8bNj62y4l8VpnAWN+j4mntr3LNMN8eGPt3TR/rBX3kSs16Ry
-5+7Hhnp4zTwZ/4vSnOPAGeg2MooZ9TAFWt4UPCW7TmmgtM8w68pmqgNcgCNbgWQ0M4160PgD5n5w
-IRdO6+1y3glxzX7JJYOKSygkVYgx5QWpuYhAro43EOOZWaZP+bsInOWgjRUfGUVqLxBTfzzeRkTH
-SbIhNrvzIIcCMaQRYndZyfVsqJJp9QWcxl1Tu3oSNOyv9OQAqBTSWBOwwQ02Da6HKlldyYOpekSE
-GZJ1nnjEZ0KM0EyJvGm0M/Ry+rvCja126bpsJsCwGtWuZYfu8MT9f6ZfcHOeoNrA3O9hJ2hKEUB1
-QPBev0ItJq6SM+xw//1sDQ9C/XqbA4ryGYkpu7Shnk8qBbxmLmhD53S0iePhagQAgaIXY4OBbduD
-bPGWmwRGAZ6AooQ5ha/oGZAT1G/MNiOP6txM9QFhrs99yraAg33ceWh+GkSmcxPF2jAo5AjxCZdS
-GZIMAAt9zBtS0GWPuyjvVxpO+wAAAABk02lkcsrUmgAB9QXWEQAABfwxULHEZ/sCAAAAAARZWg==
+~~~ { .java }
+// Build & run:
+// javac -Xlint:all Example.java && java Example
+import java.lang.Exception;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Method;
+
+public class Example {
+
+    public static void main(String args[]){
+        new SimpleTest().test();
+        new SimpleTest2().test();
+    }
+}
+
+class State {
+    public String url;
+
+    public State() {
+        this("localhost");
+    }
+
+    public State(String url) {
+        this.url = url;
+    }
+}
+
+abstract class BasePage {
+    protected final State state;
+
+    public BasePage(State state) {
+        this.state = state;
+    }
+
+    public static BasePage magic() throws Exception {
+        throw new Exception("unimplemented");
+    };
+}
+
+class SimplePage extends BasePage {
+    public SimplePage(State state) {
+        super(state);
+    }
+
+    // @Override
+    public static SimplePage magic(State state) {
+        state.url = "url://base/page";
+        return new SimplePage(state);
+    }
+}
+
+class SimplePage2 extends BasePage {
+    public SimplePage2(State state) {
+        super(state);
+    }
+
+    // @Override
+    public static SimplePage2 magic(State state) {
+        state.url = "url://base/page-2";
+        return new SimplePage2(state);
+    }
+}
+
+class WithPageTest<T extends BasePage> {
+    protected T inner;
+    protected State state;
+
+
+    public Class<T> getParamClass() throws Throwable {
+        ParameterizedType superclass = (ParameterizedType) getClass().getGenericSuperclass();
+        @SuppressWarnings("unchecked")
+        Class<T> clazz = (Class<T>) superclass.getActualTypeArguments()[0];
+        return clazz;
+    }
+
+    public WithPageTest() {
+        this.state = new State();
+
+        try {
+            Class<T> c = getParamClass();
+            Method m = c.getMethod("magic", State.class);
+            @SuppressWarnings("unchecked")
+            T inner = (T)(m.invoke(null, state));
+            this.inner = inner;
+        } catch (Throwable e) {
+        }
+    }
+}
+
+class SimpleTest extends WithPageTest<SimplePage> {
+
+    public void test() {
+        System.out.println("url: " + this.inner.state.url);
+    }
+}
+
+class SimpleTest2 extends WithPageTest<SimplePage2> {
+
+    public void test() {
+        System.out.println("url: " + this.inner.state.url);
+    }
+}
 ~~~
 
 Sed
