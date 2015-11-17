@@ -110,8 +110,10 @@ class SimpleTest2 extends WithPageTest<SimplePage2> {
 }
 ~~~
 
-Sed
----
+Bash
+----
+
+Remove imports from code (so number of lines can be counted without imports).
 
 ~~~ { .bash }
 find . -name '*.hs' -print0 \
