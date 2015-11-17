@@ -1,4 +1,9 @@
-# handy-java
+Handy Snippets
+==============
+
+Java
+----
+
 Some java snippets
 
 ~~~ { .base64 }
@@ -18,7 +23,8 @@ bPGWmwRGAZ6AooQ5ha/oGZAT1G/MNiOP6txM9QFhrs99yraAg33ceWh+GkSmcxPF2jAo5AjxCZdS
 GZIMAAt9zBtS0GWPuyjvVxpO+wAAAABk02lkcsrUmgAB9QXWEQAABfwxULHEZ/sCAAAAAARZWg==
 ~~~
 
-Not java but still handy:
+Sed
+---
 
 ~~~ { .bash }
 find . -name '*.hs' -print0 \
