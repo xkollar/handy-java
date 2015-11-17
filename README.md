@@ -113,9 +113,20 @@ class SimpleTest2 extends WithPageTest<SimplePage2> {
 Bash
 ----
 
-Remove imports from code (so number of lines can be counted without imports).
+Remove imports from **Haskell** code (so number of lines can be counted without imports).
 
 ~~~ { .bash }
 find . -name '*.hs' -print0 \
 | xargs -n1 -0 sed -i -n '/^\s*$/d;H;${x;s/^\n//;s/\nimport[^\n]*\(\n [^\n]*\)*//g;p}'
+~~~
+
+Generate `Portability` Haddock header from `LANGUAGE` pragmas for **Haskell** code.
+(Does not work well when `LANGUAGE` pragmas are included only conditionally via `CPP`.)
+
+~~~ { .bash }
+cat "${HS_FILE}" \
+| sed -n 's/^{-# LANGUAGE \(.*\) #-}$/\1/p' \
+| tr ',' '\n' | tr -d ' ' \
+| sort -u | tr '\n' ',' \
+| sed 's/\s*,\s*/, /g;s/, $//;s/\(.\{,61\}\(, \|$\)\)/--               \1\n/g;s/^-- \{13\}/-- Portability:/;s/, \n/,\n/g'
 ~~~
