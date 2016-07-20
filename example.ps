@@ -1,0 +1,129 @@
+%!PS-Adobe-3.0 Resource-Encoding
+
+% newpath
+% 0 0 moveto
+% 400 400 lineto
+% stroke
+
+1 setlinewidth
+1 setlinecap
+1 setlinejoin
+100 100 translate
+% -45 rotate
+
+/base 20 def
+
+/mInit {
+  currentpoint
+} def
+
+/mClose {
+  /y exch def
+  /x exch def
+} def
+
+/down {
+  /y exch def
+  /x exch def
+  x y base sub
+  x y base sub
+} bind def
+
+/up {
+  /y exch def
+  /x exch def
+  x y base add
+  x y base add
+} bind def
+
+/left {
+  /y exch def
+  /x exch def
+  x base sub y
+  x base sub y
+} bind def
+
+/right {
+  /y exch def
+  /x exch def
+  x base add y
+  x base add y
+} bind def
+
+/step {
+  /y exch def
+  /x exch def
+  base arcto
+  x y
+} def
+
+/kwak {
+  newpath
+  moveto
+
+  mInit
+  right up step
+  up right step
+  right up step
+  up right step
+  right down step
+  down right step
+  right up step
+  up right step
+  right up step
+  up right step
+  right up step
+  up left step
+  left down step
+  down left step
+  left down step
+  down left step
+  left up step
+  up left step
+  left up step
+  up right step
+  right up step
+  up right step
+  right up step
+  up left step
+  left down step
+  down left step
+  left down step
+  down left step
+  left down step
+  down right step
+  right down step
+  down left step
+  left down step
+  down left step
+  left down step
+  down right step
+  mClose
+
+  closepath
+  fill
+} def
+
+0.2 setgray
+-2 1 4 { /a exch def
+  -3 1 2 { /b exch def
+    a b add 6 mul base mul
+    a b sub 6 mul base mul
+    kwak
+  } bind for
+} bind for
+
+
+-1 -1 scale
+0.4 setgray
+
+base -4 mul 0 translate
+-5 1 5 { /a exch def
+  -5 1 5 { /b exch def
+    a b add 6 mul base mul
+    a b sub 6 mul base mul
+    kwak
+  } bind for
+} bind for
+
+showpage
